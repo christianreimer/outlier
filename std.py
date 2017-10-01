@@ -40,3 +40,6 @@ class RunningStd(object):
         variance_lst = [math.pow(x - mean, 2) for x in self.running_mean]
         self.std = math.sqrt(sum(variance_lst) / self.wsize)
         self.last_mean = mean
+
+    def std(self):
+        return self.std
