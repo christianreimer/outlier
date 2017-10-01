@@ -41,7 +41,7 @@ class RunStat(object):
         return iter(self._observations)
 
     def __str__(self):
-        return "<RunStat[{}] mean:{} median:{} std:{}>".format(
+        return "<RunStat[{}] mean:{} median:{} std:{}>".format(  # pragma: no cover
             self._wsize, self.mean, self.median, self.std)
 
     def add(self, obs):
@@ -68,10 +68,12 @@ class RunStat(object):
         self._update_std(obs)
 
     def _update_median(self):
-        self.median = self._ready and self._pivot_f() or None
+        if self._ready:
+            self.median = self._pivot_f()
 
     def _update_mean(self):
-        self.mean = self._ready and (self._sum / self._wsize) or None
+        if self._ready:
+            self.mean = self._sum / self._wsize
 
     def _update_std(self, obs):
         if self._check_drift():
@@ -84,13 +86,16 @@ class RunStat(object):
             self._variances.append(math.pow(obs - self.mean, 2))
             self._var_sum += self._variances[-1]
 
-        self.std = self._var_sum / self._wsize
+        try:
+            self.std = math.sqrt(self._var_sum / self._wsize)
+        except ValueError:
+            self.std = 0
 
     def _pivot_odd(self):
         """
         Return the central element for a window with odd length.
         """
-        return self.window_sorted[self._pivot]
+        return self._sorted_observations[self._pivot]
 
     def _pivot_even(self):
         """
@@ -103,7 +108,7 @@ class RunStat(object):
         Return True if we have drifted from the mean and need to recalcualte
         the standard deviation
         """
-        if self._ready and self._mean:
+        if self._ready and self._mean is not None:
             # Ready and we have an existing mean, so check if we drifted too
             # far and need to recompute
             drift = abs(self._mean - self.mean) / self._mean
