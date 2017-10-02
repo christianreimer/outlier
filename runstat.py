@@ -1,7 +1,10 @@
 """
-Basic statictic measures over a running window of N observations
+Basic statictic measures over a running window of N observations.
 
-Median, Mean, StdDev
+Onc the observation window is filled, the values for Median, Mean, StdDev will
+be continually calculated. To prevent excessive cpomputations, the variances
+for StdDev will only be recalculated when the mean has drifted by a
+configurable amount.
 """
 
 import sortedcontainers
