@@ -70,6 +70,14 @@ def test_zero_std():
     assert rs.std == 0
 
 
+def test_imginary():
+    rs = runstat.RunStat(1)
+    rs.add(-1)
+    rs._var_sum = -1
+    rs._update_std(-1)
+    assert rs.std == 0
+
+
 def test_dictlike_len():
     wsize = random.randint(1, 100)
     rs = runstat.RunStat(wsize)

@@ -2,12 +2,11 @@
 Outlier detection of scalar values
 
 Any value that is more than N standard deviations away from the median is
-considered an outlier. Both the standard deviation and media are tracked over
+considered an outlier. Both the standard deviation and median are tracked over
 a sliding window of observations.
 """
 
-import std
-import median
+import runstat
 
 
 class Outlier(object):
@@ -17,33 +16,31 @@ class Outlier(object):
     def __init__(self, wsize, std_max, drift=0.1):
         self.wsize = wsize
         self.std_max = std_max
-        self.running_std = std.RunningStd(wsize, drift)
-        self.running_med = median.RunningMedian(wsize)
+        self.rs = runstat.RunStat(wsize, drift)
 
     @property
     def std(self):
-        return self.running_std.std
+        return self.rs.std  # pragma: no cover
 
     @property
     def median(self):
-        return self.running_med.median()
+        return self.rs.median  # pragma: no cover
 
     @property
     def mean(self):
-        return self.running_std.last_mean
+        return self.rs.mean  # pragma: no cover
 
     @property
     def observations(self):
-        return self.running_med.window_obs
+        return iter(self.rs)  # pragma: no cover
 
     def add(self, obs):
         """
         Add observation to dataset
         """
-        self.running_std.add(obs)
-        self.running_med.add(obs)
+        self.rs.add(obs)
 
-    def add_and_chekc(self, obs):
+    def add_and_check(self, obs):
         """
         Add observation and check if it is an outlier
         """
@@ -55,8 +52,7 @@ class Outlier(object):
         Check if observation is an outlier wiouth using obs to update the
         dataset
         """
-        if not self.running_med.ready:
+        if not self.rs.ready:
             return None
-        med_ = self.running_med.median()
-        return abs(obs - med_) > (self.std_max * self.running_std.std)
-
+        med = self.rs.median
+        return abs(obs - med) > (self.std_max * self.rs.std)
