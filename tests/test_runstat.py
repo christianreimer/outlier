@@ -60,8 +60,9 @@ def test_std_event():
     std_test(10, 100)
 
 
-def test_zero_std():
+def test_zero_mean_std():
     rs = runstat.RunStat(5)
+    rs.add(0)
     rs.add(0)
     rs.add(0)
     rs.add(0)
