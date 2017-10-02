@@ -13,10 +13,10 @@ class Outlier(object):
     """
     Outlier detection of scalar value based on standard deviation
     """
-    def __init__(self, wsize, std_max, drift=0.1):
+    def __init__(self, wsize, std_max, max_drift=0.1):
         self.wsize = wsize
         self.std_max = std_max
-        self.rs = runstat.RunStat(wsize, drift)
+        self.rs = runstat.RunStat(wsize, max_drift)
 
     @property
     def std(self):

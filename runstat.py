@@ -12,6 +12,7 @@ class RunStat(object):
     """
     Statistic measures over a running window of N observations
     """
+
     def __init__(self, wsize, max_drift=0.05):
         self._wsize = wsize
         self._max_drift = max_drift
