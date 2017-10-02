@@ -36,7 +36,7 @@ def std_test(wsize, dsize):
         rs.add(a[i])
 
     for i in range(wsize, dsize):
-        assert rs.std == pytest.approx(np.std(a[i - wsize: i]), 0.01)
+        assert rs.std == pytest.approx(np.std(a[i - wsize: i]), 0.025)
         rs.add(a[i])
 
 

@@ -111,7 +111,11 @@ class RunStat(object):
         if self.ready and self._mean is not None:
             # Ready and we have an existing mean, so check if we drifted too
             # far and need to recompute
-            drift = abs(self._mean - self.mean) / self._mean
+            try:
+                drift = abs(self._mean - self.mean) / self._mean
+            except ZeroDivisionError:
+                # The current mean is 0
+                drift = abs(self._mean - self.mean)
             return drift >= self._max_drift
         elif self.ready:
             # Just became ready, no existing mean, so computation is neeed

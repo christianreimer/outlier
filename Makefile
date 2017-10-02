@@ -1,7 +1,7 @@
 .PHONY: test timeit clean install
 
 test: 
-	pytest --cov-report term-missing --cov=. --verbose test_*.py
+	pytest --cov-report term-missing --cov=. --verbose tests/*
 
 timeit:	
 	@echo "Timing add()"
