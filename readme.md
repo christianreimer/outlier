@@ -1,1 +1,3 @@
 # Outlier detection on a stream of scalar observations
+
+[![Build Status](https://travis-ci.org/christianreimer/outlier.svg?branch=master)](https://travis-ci.org/christianreimer/outlier)  [![Coverage Status](https://coveralls.io/repos/github/christianreimer/outlier/badge.svg?branch=master)](https://coveralls.io/github/christianreimer/outlier?branch=master)  [![Python Version](https://img.shields.io/badge/python-3.6-blue.svg)](https://img.shields.io/badge/python-3.6-blue.svg)
