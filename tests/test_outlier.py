@@ -11,11 +11,25 @@ def test_no_outlier():
 
 
 def test_outlier():
-    data = np.random.random(100)
-    std = np.std(data)
-
+    data = np.random.randint(0, 100, 500)
     out = outlier.Outlier(100, 3, max_drift=0.001)
+    results = []
+
     for d in data:
         out.add(d)
-    should_be_outlier = np.mean(data) + 3.1 * std
-    assert out.check(should_be_outlier)
+        if not out.rs.ready:
+            continue
+
+        a = np.array(list(out.rs))
+        s = np.std(a)
+        m = np.mean(a)
+
+        d = np.random.randint(50, 500)
+
+        if out.check(d):
+            results.append(d >= (3 * s + m))
+        else:
+            results.append(d < (3 * s + m))
+
+    correct = sum([1 for r in results if r])
+    assert correct / len(results) >= 0.98

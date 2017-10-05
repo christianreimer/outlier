@@ -35,9 +35,11 @@ def std_test(wsize, dsize):
     for i in range(wsize):
         rs.add(a[i])
 
+    result = []
     for i in range(wsize, dsize):
-        assert rs.std == pytest.approx(np.std(a[i - wsize: i]), 0.025)
+        result.append(rs.std == pytest.approx(np.std(a[i - wsize: i]), 0.002))
         rs.add(a[i])
+    return result
 
 
 def test_median_even():
@@ -56,8 +58,13 @@ def test_mean_odd():
     mean_test(11, 100)
 
 
-def test_std_event():
-    std_test(10, 100)
+def test_std():
+    success = 0
+    for _ in range(100):
+        result = std_test(10, 100)
+        if all(result):
+            success += 1
+    assert success / 100 >= 0.98
 
 
 def test_zero_mean_std():
