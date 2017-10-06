@@ -31,14 +31,17 @@ Abnormal observations: [17, 17, 18, 20]
 >>> print('Normal observations: {}'.format(sorted(normal)))
 Normal observations: [0, 2, 3, 5, 6, 7, 7, 8, 8, 9, 11, 13, 13, 13, 16, 16]
 >>>
->>> print(out.std)
-4.455012682361296
->>> print(out.mean)
-6.03
->>> print(out.median)
-6.0
->>>
-
 ```
 
 
+### Intalation
+```bash
+$ git clone https://github.com/christianreimer/outlier.git
+$ pip install -f requirements.txt
+```
+
+And optionally
+```bash
+$ pip install -f requirements_test.txt
+$ make test
+```
