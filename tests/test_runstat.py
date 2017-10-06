@@ -1,7 +1,12 @@
 import numpy as np
 import pytest
 import random
+import math
 import runstat
+
+
+def max_std_err(wsize, max_drift):
+    return math.sqrt(wsize * math.pow(max_drift, 2))
 
 
 def median_test(wsize, dsize):
@@ -30,14 +35,18 @@ def mean_test(wsize, dsize):
 
 def std_test(wsize, dsize):
     a = np.random.rand(dsize)
-    rs = runstat.RunStat(wsize, max_drift=0.001)
+    rs = runstat.RunStat(wsize, max_drift=0.0)
+
+    err = max_std_err(wsize, 0.001)
 
     for i in range(wsize):
         rs.add(a[i])
 
     result = []
     for i in range(wsize, dsize):
-        result.append(rs.std == pytest.approx(np.std(a[i - wsize: i]), 0.002))
+        np_std = np.std(a[i - wsize: i])
+        max_err = np.mean(a[i - wsize: i]) * err + 0.00001
+        result.append(rs.std == pytest.approx(np_std, 0.001))
         rs.add(a[i])
     return result
 
@@ -58,13 +67,8 @@ def test_mean_odd():
     mean_test(11, 100)
 
 
-def test_std():
-    success = 0
-    for _ in range(100):
-        result = std_test(10, 100)
-        if all(result):
-            success += 1
-    assert success / 100 >= 0.98
+def test_std_even():
+    assert all(std_test(100, 1000))
 
 
 def test_zero_mean_std():

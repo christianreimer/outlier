@@ -10,10 +10,11 @@ def test_no_outlier():
         assert not out.add_and_check(d)
 
 
-def test_outlier():
-    data = np.random.randint(0, 100, 500)
-    out = outlier.Outlier(100, 3, max_drift=0.001)
-    results = []
+def outlier_test(wsize, factor, low, high):
+    data = np.random.randint(low, high, 1000)
+    out = outlier.Outlier(wsize, factor, max_drift=0.001)
+    success_count = 0
+    count = 0
 
     for d in data:
         out.add(d)
@@ -24,12 +25,29 @@ def test_outlier():
         s = np.std(a)
         m = np.mean(a)
 
-        d = np.random.randint(50, 500)
+        d = np.random.randint(low + high // 2, high * factor)
+        np_outlier = d >= (factor * s + m)
 
-        if out.check(d):
-            results.append(d >= (3 * s + m))
-        else:
-            results.append(d < (3 * s + m))
+        if out.check(d) == np_outlier:
+            success_count += 1
+        count += 1
 
-    correct = sum([1 for r in results if r])
-    assert correct / len(results) >= 0.98
+    return success_count / count
+
+
+def test_odd_95pct():
+    assert outlier_test(101, 3, 0, 100) >= 0.95
+
+
+def test_even_95pct():
+    assert outlier_test(100, 3, 0, 100) >= 0.95
+
+
+def test_odd_98pct():
+    assert outlier_test(101, 3, 0, 100) >= 0.98
+
+
+def test_even_98pct():
+    assert outlier_test(100, 3, 0, 100) >= 0.98
+
+
