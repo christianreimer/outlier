@@ -4,6 +4,32 @@ Outlier detection of scalar values
 Any value that is more than N standard deviations away from the median is
 considered an outlier. Both the standard deviation and median are tracked over
 a sliding window of observations.
+
+Example:
+>>> import random
+>>> import outlier
+>>>
+>>> # Detect outliers over a sliding window of 100 observations
+>>> # Any number that is 3 (or more) stddev away from median is an outlier
+>>> out = outlier.Outlier(100, 3)
+>>> for _ in range(100):
+>>>     out.add(random.randint(0, 10))
+>>>
+>>> outliers = []
+>>> normal = []
+>>> for _ in range(20):
+>>>     obs = random.randint(5, 25)
+>>>     if out.check(obs):
+>>>         outliers.append(obs)
+>>>     else:
+>>>         normal.append(obs)
+>>>
+>>> print('Abnormal observations: {}'.format(sorted(outliers)))
+Abnormal observations: [14, 14, 17, 17, 18, 19, 23, 24, 24, 25]
+>>>
+>>> print('Normal observations:   {}'.format(sorted(normal)))
+Normal observations:   [6, 6, 7, 7, 9, 10, 11, 11, 12, 13]
+>>>
 """
 
 import runstat
