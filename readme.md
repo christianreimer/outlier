@@ -7,29 +7,25 @@ This module provides the ability to easily detect outliers in streaming scalar d
 ### Example
 
 ```python
->>> import random
+>>>
 >>> import outlier
+>>> import random
 >>>
->>> # Detect outliers over a sliding window of 100 observations
->>> # Any number that is 3 (or more) stddev away from median is an outlier
->>> out = outlier.Outlier(wsize=100, std_max=3)
+>>> out = outlier.Outlier(100, 3)
 >>> for _ in range(100):
->>>     out.add(random.randint(0, 10))  # Just adds the observation
->>>
->>> outliers = []
->>> normal = []
->>> for _ in range(20):
->>>     obs = random.randit(0, 20)
->>>     if out.add_and_check(obs):  # Adds the observation to the data set and
->>>         outliers.append(obs)    # checks if it is an outlier
->>>     else:
->>>         normal.append(obs)
->>>
->>> print('Abnormal observations: {}'.format(sorted(outliers)))
-Abnormal observations: [17, 17, 18, 20]
->>>
->>> print('Normal observations: {}'.format(sorted(normal)))
-Normal observations: [0, 2, 3, 5, 6, 7, 7, 8, 8, 9, 11, 13, 13, 13, 16, 16]
+...     out.add(random.randint(20, 30))
+...
+>>> for i in range(100):
+...     obs = random.randint(0, 50)
+...     if out.add_and_check(obs):
+...             print('Value:{} Sample:{} is an outlier'.format(obs, i))
+Value:17 Sample:2 is an outlier
+Value:14 Sample:3 is an outlier
+Value:45 Sample:5 is an outlier
+Value:48 Sample:7 is an outlier
+Value:50 Sample:8 is an outlier
+Value:48 Sample:15 is an outlier
+Value:48 Sample:17 is an outlier
 >>>
 ```
 

@@ -27,8 +27,8 @@ Example:
 >>> print('Abnormal observations: {}'.format(sorted(outliers)))
 Abnormal observations: [14, 14, 17, 17, 18, 19, 23, 24, 24, 25]
 >>>
->>> print('Normal observations:   {}'.format(sorted(normal)))
-Normal observations:   [6, 6, 7, 7, 9, 10, 11, 11, 12, 13]
+>>> print('Normal observations: {}'.format(sorted(normal)))
+Normal observations: [6, 6, 7, 7, 9, 10, 11, 11, 12, 13]
 >>>
 """
 

@@ -1,4 +1,4 @@
-.PHONY: test clean install
+.PHONY: test clean install perf
 
 test: 
 	pytest --cov-report term-missing --cov=. --verbose tests/*
@@ -12,3 +12,6 @@ clean:
 install:
 	pip install -r requirements.txt
 	pip install -r requirements_test.txt
+
+perf:
+	python -m tests.perf
