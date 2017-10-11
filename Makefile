@@ -1,7 +1,7 @@
 .PHONY: test clean install perf
 
 test: 
-	pytest --cov-report term-missing --cov=. --verbose tests/*
+	pytest --cov-report term-missing --cov=runstat.py --cov=outlier.py --verbose tests/*
 
 clean:
 	@echo "Removing cache directories"
