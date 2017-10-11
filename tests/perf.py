@@ -3,7 +3,7 @@ import random
 import time
 
 
-def setup(wsize):
+def populate_initial_data(wsize):
     out = outlier.Outlier(wsize, 3)
     for _ in range(wsize):
         out.add(random.randint(0, 100))
@@ -30,7 +30,7 @@ def main(wsize=10000, num_obs=1000000):
     print('Running {} observations over a window of size {}'.format(
         num_obs, wsize))
 
-    out = setup(wsize)
+    out = populate_initial_data(wsize)
     start_time = time.time()
     num_normal, num_outlier = runner(out, num_obs)
     end_time = time.time()
@@ -44,5 +44,11 @@ def main(wsize=10000, num_obs=1000000):
     print('Num Outlier Obs: {}'.format(num_outlier))
 
 
+def test_perf():
+    main(wsize=10, num_obs=1000)
+    assert True
+
+
 if __name__ == '__main__':
-    main()
+    main()  # pragma: no cover
+
