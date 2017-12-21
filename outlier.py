@@ -18,11 +18,11 @@ Example:
 >>> outliers = []
 >>> normal = []
 >>> for _ in range(20):
->>>     obs = random.randint(5, 25)
->>>     if out.check(obs):
->>>         outliers.append(obs)
+>>>     observation = random.randint(5, 25)
+>>>     if out.check(observation):
+>>>         outliers.append(observation)
 >>>     else:
->>>         normal.append(obs)
+>>>         normal.append(observation)
 >>>
 >>> print('Abnormal observations: {}'.format(sorted(outliers)))
 Abnormal observations: [14, 14, 17, 17, 18, 19, 23, 24, 24, 25]
@@ -39,10 +39,11 @@ class Outlier(object):
     """
     Outlier detection of scalar value based on standard deviation
     """
-    def __init__(self, wsize, std_max, max_drift=0.1):
-        self.wsize = wsize
-        self.std_max = std_max
-        self.rs = runstat.RunStat(wsize, max_drift)
+
+    def __init__(self, window_size, max_standard_dev, max_drift=0.1):
+        self.window_size = window_size
+        self.max_standard_dev = max_standard_dev
+        self.rs = runstat.RunStat(window_size, max_drift)
 
     @property
     def std(self):
@@ -60,25 +61,25 @@ class Outlier(object):
     def observations(self):
         return iter(self.rs)  # pragma: no cover
 
-    def add(self, obs):
+    def add(self, observation):
         """
         Add observation to dataset
         """
-        self.rs.add(obs)
+        self.rs.add(observation)
 
-    def add_and_check(self, obs):
+    def add_and_check(self, observation):
         """
         Add observation and check if it is an outlier
         """
-        self.add(obs)
-        return self.check(obs)
+        self.add(observation)
+        return self.check(observation)
 
-    def check(self, obs):
+    def check(self, observation):
         """
-        Check if observation is an outlier wiouth using obs to update the
-        dataset
+        Check if observation is an outlier wiouth using observation to update
+        the dataset
         """
         if not self.rs.ready:
             return None
         med = self.rs.median
-        return abs(obs - med) > (self.std_max * self.rs.std)
+        return abs(observation - med) > (self.max_standard_dev * self.rs.std)

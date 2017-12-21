@@ -2,7 +2,7 @@
 Basic statictic measures over a running window of N observations.
 
 Onc the observation window is filled, the values for Median, Mean, StdDev will
-be continually calculated. To prevent excessive cpomputations, the variances
+be continually calculated. To prevent excessive computations, the variances
 for StdDev will only be recalculated when the mean has drifted by a
 configurable amount.
 """
@@ -103,7 +103,8 @@ class RunStat(object):
 
     def _pivot_even(self):
         """
-        Return tohe central element for a window with even length.
+        Return the average of the two central elements for a window with even
+        length.
         """
         return sum(self._sorted_observations[self._pivot:self._pivot + 2]) / 2
 
@@ -127,4 +128,3 @@ class RunStat(object):
         else:
             # Not ready yet
             return False
-
