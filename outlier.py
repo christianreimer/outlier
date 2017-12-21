@@ -77,7 +77,7 @@ class Outlier(object):
 
     def check(self, observation):
         """
-        Check if observation is an outlier wiouth using observation to update
+        Check if observation is an outlier without using observation to update
         the dataset
         """
         if not self.rs.ready:
