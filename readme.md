@@ -11,21 +11,21 @@ This module provides the ability to easily detect outliers in streaming scalar d
 >>> import outlier
 >>> import random
 >>>
->>> out = outlier.Outlier(100, 3)
+>>> out = outlier.Outlier(window_size=100, max_standard_dev=3)
 >>> for _ in range(100):
 ...     out.add(random.randint(20, 30))
 ...
 >>> for i in range(100):
 ...     obs = random.randint(0, 50)
 ...     if out.add_and_check(obs):
-...             print('Value:{} Sample:{} is an outlier'.format(obs, i))
-Value:17 Sample:2 is an outlier
-Value:14 Sample:3 is an outlier
-Value:45 Sample:5 is an outlier
-Value:48 Sample:7 is an outlier
-Value:50 Sample:8 is an outlier
-Value:48 Sample:15 is an outlier
-Value:48 Sample:17 is an outlier
+...             print(f'Value:{obs} Sample Number:{i} is an outlier')
+Value:17 Sample Number:2 is an outlier
+Value:14 Sample Number:3 is an outlier
+Value:45 Sample Number:5 is an outlier
+Value:48 Sample Number:7 is an outlier
+Value:50 Sample Number:8 is an outlier
+Value:48 Sample Number:15 is an outlier
+Value:48 Sample Number:17 is an outlier
 >>>
 ```
 

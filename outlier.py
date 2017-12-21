@@ -6,12 +6,13 @@ considered an outlier. Both the standard deviation and median are tracked over
 a sliding window of observations.
 
 Example:
+>>>
 >>> import random
 >>> import outlier
 >>>
 >>> # Detect outliers over a sliding window of 100 observations
 >>> # Any number that is 3 (or more) stddev away from median is an outlier
->>> out = outlier.Outlier(100, 3)
+>>> out = outlier.Outlier(window_size=100, max_standard_dev=3)
 >>> for _ in range(100):
 >>>     out.add(random.randint(0, 10))
 >>>

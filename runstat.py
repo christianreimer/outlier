@@ -48,13 +48,13 @@ class RunStat(object):
         return "<RunStat[{}] mean:{} median:{} std:{}>".format(  # pragma: no cover
             self._wsize, self.mean, self.median, self.std)
 
-    def add(self, obs):
+    def add(self, overvation):
         """
-        Add obs to window
+        Add overvation to window
         """
-        self._observations.append(obs)
-        self._sorted_observations.add(obs)
-        self._sum += obs
+        self._observations.append(overvation)
+        self._sorted_observations.add(overvation)
+        self._sum += overvation
 
         if self.ready:
             # The window was already full, so we need to discard the oldest
@@ -69,7 +69,7 @@ class RunStat(object):
 
         self._update_median()
         self._update_mean()
-        self._update_std(obs)
+        self._update_std(overvation)
 
     def _update_median(self):
         if self.ready:
@@ -79,7 +79,7 @@ class RunStat(object):
         if self.ready:
             self.mean = self._sum / self._wsize
 
-    def _update_std(self, obs):
+    def _update_std(self, observation):
         if self._check_drift():
             self._variances = [math.pow(x - self.mean, 2) for x in
                                self._observations]
@@ -87,7 +87,7 @@ class RunStat(object):
             self._mean = self.mean
         elif self.ready:
             self._var_sum -= self._variances[0]
-            self._variances.append(math.pow(obs - self.mean, 2))
+            self._variances.append(math.pow(observation - self.mean, 2))
             self._var_sum += self._variances[-1]
 
         try:
